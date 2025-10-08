@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="index.css">
 
 </head>
+
 <body class="bg-gray-50">
     <!-- Landing Page -->
     <div id="landingPage" class="gradient-bg min-h-screen">
@@ -506,7 +508,18 @@
 
                 <!-- Recent Activity -->
                 <div class="card p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h3>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900">Recent Activity</h3>
+                        <button onclick="clearRecentActivity()"
+                            class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                            <span>Clear All</span>
+                        </button>
+                    </div>
                     <div id="recentActivity" class="space-y-3">
                         <p class="text-gray-500 text-center py-8">No recent activity. Start learning to see your
                             progress here!</p>
@@ -596,473 +609,543 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Login Modal -->
-            <div id="loginModal" class="modal-backdrop fixed inset-0 hidden items-center justify-center z-50">
-                <div class="modal-content rounded-2xl p-8 max-w-md w-full mx-4 fade-in">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Sign In</h2>
-                    <form onsubmit="handleLogin(event)" class="space-y-4">
-                        <div>
-                            <input type="text" placeholder="Enter your name" required
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <input type="email" placeholder="Email address" required
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                        </div>
-                        <button type="submit" class="w-full primary-btn text-white py-3 rounded-lg font-medium">
-                            Sign In
-                        </button>
-                    </form>
-                    <button onclick="closeLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+    <!-- Login Modal (Moved outside dashboard for visibility) -->
+    <div id="loginModal" class="modal-backdrop fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-2xl p-8 max-w-md w-full mx-4 fade-in">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Sign In</h2>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <input type="text" placeholder="Enter your name" required
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
-            </div>
+                <div>
+                    <input type="email" placeholder="Email address" required
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <button type="submit" class="w-full primary-btn text-white py-3 rounded-lg font-medium">
+                    Sign In
+                </button>
+            </form>
+            <button onclick="closeLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
 
-            <script>
-                // Data Structures - Using HashMap (Object) and Arrays for data storage
-                class DataStore {
-                    constructor() {
-                        // HashMap for user data
-                        this.users = new Map();
+    <script>
+        // Data Structures - Using HashMap (Object) and Arrays for data storage
+        class DataStore {
+            constructor() {
+                // HashMap for user data (simple object-based map simulation if needed, but using native Map)
+                this.users = new Map();
 
-                        // Array of topics
-                        this.topics = [
-                            {
-                                id: 1,
-                                name: "Set Theory",
-                                description: "Learn about sets, operations, and relationships",
-                                completed: false,
-                                formulas: ["A ∪ B", "A ∩ B", "A - B", "A'"],
-                                learningContent: {
-                                    introduction: "Set theory is the foundation of modern mathematics. A set is a collection of distinct objects, called elements or members.",
-                                    youtubeLink: "https://youtu.be/iTZfATpm0Yk?si=eU4MnOm85KpAtJc0",
-                                    concepts: [
-                                        {
-                                            title: "What is a Set?",
-                                            content: "A set is a well-defined collection of distinct objects. For example, A = {1, 2, 3} is a set containing three numbers.",
-                                            example: "Examples: {red, blue, green}, {1, 3, 5, 7}, {apple, banana, orange}"
-                                        },
-                                        {
-                                            title: "Set Operations",
-                                            content: "Sets can be combined using various operations:",
-                                            example: "Union (∪): Combines all elements from both sets\nIntersection (∩): Elements common to both sets\nDifference (-): Elements in first set but not second"
-                                        },
-                                        {
-                                            title: "Venn Diagrams",
-                                            content: "Visual representations of sets using circles to show relationships between different sets.",
-                                            example: "Two overlapping circles can show union, intersection, and differences between sets A and B."
-                                        }
-                                    ],
-                                    keyPoints: [
-                                        "Sets contain unique elements (no duplicates)",
-                                        "Order doesn't matter in sets",
-                                        "Empty set (∅) contains no elements",
-                                        "Universal set (U) contains all possible elements"
-                                    ]
+                // Array of topics
+                this.topics = [
+                    {
+                        id: 1,
+                        name: "Set Theory",
+                        description: "Learn about sets, operations, and relationships",
+                        completed: false,
+                        formulas: ["A ∪ B", "A ∩ B", "A - B", "A'"],
+                        learningContent: {
+                            introduction: "Set theory is the foundation of modern mathematics. A set is a collection of distinct objects, called elements or members.",
+                            youtubeLink: "https://youtu.be/iTZfATpm0Yk?si=eU4MnOm85KpAtJc0",
+                            concepts: [
+                                {
+                                    title: "What is a Set?",
+                                    content: "A set is a well-defined collection of distinct objects. For example, A = {1, 2, 3} is a set containing three numbers.",
+                                    example: "Examples: {red, blue, green}, {1, 3, 5, 7}, {apple, banana, orange}"
                                 },
-                                problems: [
-                                    {
-                                        question: "If A = {1, 2, 3} and B = {2, 3, 4}, find A ∪ B",
-                                        options: ["{1, 2, 3, 4}", "{2, 3}", "{1, 4}", "{1, 2, 3, 2, 3, 4}"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "What is A ∩ B for the same sets?",
-                                        options: ["{1, 4}", "{2, 3}", "{1, 2, 3, 4}", "∅"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "Find A - B for A={1,2,3}, B={2,3,4}",
-                                        options: ["{1}", "{2}", "{3}", "∅"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "If U={1,2,3,4,5}, A={1,2}, find A'",
-                                        options: ["{1,2,3}", "{3,4,5}", "{2,3,4}", "{5}"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "Which is true?",
-                                        options: ["{1,2} ⊆ {1,2,3}", "{4} ∈ {1,2,3}", "∅ ⊆ ∅ is false", "Order matters in sets"],
-                                        correct: 0
-                                    }
-                                ]
-                            },
-                            {
-                                id: 2,
-                                name: "Logic & Proofs",
-                                description: "Propositional logic, truth tables, and proof techniques",
-                                completed: false,
-                                formulas: ["P ∧ Q", "P ∨ Q", "P → Q", "¬P"],
-                                learningContent: {
-                                    introduction: "Logic is the foundation of mathematical reasoning and computer science. It helps us determine what is true or false.",
-                                    youtubeLink: "https://youtu.be/HIkIqt_ytdc?si=nPo3ODFdYHrip233",
-                                    concepts: [
-                                        {
-                                            title: "Propositions",
-                                            content: "A proposition is a statement that is either true or false, but not both.",
-                                            example: "'The sky is blue' is a proposition (true)\n'2 + 2 = 5' is a proposition (false)\n'What time is it?' is NOT a proposition"
-                                        },
-                                        {
-                                            title: "Logical Operators",
-                                            content: "We can combine propositions using logical operators:",
-                                            example: "AND (∧): Both must be true\nOR (∨): At least one must be true\nNOT (¬): Opposite truth value\nIMPLIES (→): If P then Q"
-                                        },
-                                        {
-                                            title: "Truth Tables",
-                                            content: "Truth tables show all possible truth values for logical expressions.",
-                                            example: "P | Q | P∧Q | P∨Q\nT | T |  T  |  T\nT | F |  F  |  T\nF | T |  F  |  T\nF | F |  F  |  F"
-                                        }
-                                    ],
-                                    keyPoints: [
-                                        "Every proposition has exactly one truth value",
-                                        "Logical operators follow specific rules",
-                                        "Truth tables help verify logical equivalences",
-                                        "Proofs use logical reasoning to establish truth"
-                                    ]
+                                {
+                                    title: "Set Operations",
+                                    content: "Sets can be combined using various operations:",
+                                    example: "Union (∪): Combines all elements from both sets\nIntersection (∩): Elements common to both sets\nDifference (-): Elements in first set but not second"
                                 },
-                                problems: [
-                                    {
-                                        question: "What is the truth value of (T ∧ F) ∨ T?",
-                                        options: ["True", "False", "Cannot determine", "Both"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "Negation of True?",
-                                        options: ["True", "False"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "If P is true, Q is false, what is P → Q?", options: ["True", "False"], correct: 1
-                                    },
-                                    {
-                                        question: "If P=false, Q=false, what is P ∨ Q?",
-                                        options: ["True", "False"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "Which is tautology?",
-                                        options: ["P ∨ ¬P", "P ∧ ¬P", "P → Q", "Q → P"],
-                                        correct: 0
-                                    }
-                                ]
+                                {
+                                    title: "Venn Diagrams",
+                                    content: "Visual representations of sets using circles to show relationships between different sets.",
+                                    example: "Two overlapping circles can show union, intersection, and differences between sets A and B."
+                                }
+                            ],
+                            keyPoints: [
+                                "Sets contain unique elements (no duplicates)",
+                                "Order doesn't matter in sets",
+                                "Empty set (∅) contains no elements",
+                                "Universal set (U) contains all possible elements"
+                            ]
+                        },
+                        problems: [
+                            {
+                                question: "If A = {1, 2, 3} and B = {2, 3, 4}, find A ∪ B",
+                                options: ["{1, 2, 3, 4}", "{2, 3}", "{1, 4}", "{1, 2, 3, 2, 3, 4}"],
+                                correct: 0
                             },
                             {
-                                id: 3,
-                                name: "Graph Theory",
-                                description: "Vertices, edges, paths, and graph algorithms",
-                                completed: false,
-                                formulas: ["V - E + F = 2", "Σdeg(v) = 2|E|"],
-                                learningContent: {
-                                    introduction: "Graph theory studies networks of connected objects. It's essential for understanding social networks, computer networks, and many algorithms.",
-                                    youtubeLink: "https://youtu.be/LFKZLXVO-Dg?si=9P9RrExU4J1sQCEV",
-                                    concepts: [
-                                        {
-                                            title: "Basic Components",
-                                            content: "A graph consists of vertices (nodes) connected by edges (links).",
-                                            example: "Vertices: Cities in a map\nEdges: Roads connecting cities\nGraph: The entire road network"
-                                        },
-                                        {
-                                            title: "Types of Graphs",
-                                            content: "Graphs can be directed or undirected, weighted or unweighted.",
-                                            example: "Directed: One-way streets\nUndirected: Two-way streets\nWeighted: Roads with distances\nUnweighted: Just connections"
-                                        },
-                                        {
-                                            title: "Graph Properties",
-                                            content: "Important properties include degree, paths, cycles, and connectivity.",
-                                            example: "Degree: Number of connections to a vertex\nPath: Route from one vertex to another\nCycle: Path that returns to starting vertex"
-                                        }
-                                    ],
-                                    keyPoints: [
-                                        "Graphs model relationships between objects",
-                                        "Degree of vertex = number of incident edges",
-                                        "Sum of all degrees = 2 × number of edges",
-                                        "Many real-world problems use graph algorithms"
-                                    ]
-                                },
-                                problems: [
-                                    {
-                                        question: "In a complete graph with 5 vertices, how many edges are there?",
-                                        options: ["10", "15", "20", "25"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "Degree of each vertex in complete graph K4?",
-                                        options: ["2", "3", "4", "6"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "In a tree with 7 vertices, edges=?",
-                                        options: ["6", "7", "8", "5"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "Which is Eulerian?",
-                                        options: ["All vertices even degree", "All vertices odd degree", "Exactly 2 odd", "None"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "Which is planar?",
-                                        options: ["K3,3", "K5", "K4", "K6"],
-                                        correct: 2
-                                    }
-
-                                ]
+                                question: "What is A ∩ B for the same sets?",
+                                options: ["{1, 4}", "{2, 3}", "{1, 2, 3, 4}", "∅"],
+                                correct: 1
                             },
                             {
-                                id: 4,
-                                name: "Combinatorics",
-                                description: "Counting principles, permutations, and combinations",
-                                completed: false,
-                                formulas: ["P(n,r) = n!/(n-r)!", "C(n,r) = n!/(r!(n-r)!)"],
-                                learningContent: {
-                                    introduction: "Combinatorics is the art of counting. It helps us determine how many ways we can arrange, select, or organize objects.",
-                                    youtubeLink: "https://youtu.be/ied31kWht7Y?si=Q9Nn_mDz4jsN3TWM",
-                                    concepts: [
-                                        {
-                                            title: "Fundamental Counting Principle",
-                                            content: "If one event can occur in m ways and another in n ways, then both can occur in m × n ways.",
-                                            example: "Choosing outfit: 3 shirts × 2 pants = 6 different outfits\nPassword: 26 letters × 10 digits = 260 combinations for 2 characters"
-                                        },
-                                        {
-                                            title: "Permutations",
-                                            content: "Arrangements where order matters. P(n,r) = n!/(n-r)!",
-                                            example: "Arranging 3 books from 5: P(5,3) = 5!/(5-3)! = 5!/2! = 60\nFirst place: 5 choices, Second: 4 choices, Third: 3 choices"
-                                        },
-                                        {
-                                            title: "Combinations",
-                                            content: "Selections where order doesn't matter. C(n,r) = n!/(r!(n-r)!)",
-                                            example: "Choosing 3 books from 5: C(5,3) = 5!/(3!×2!) = 10\nSame selection regardless of order"
-                                        }
-                                    ],
-                                    keyPoints: [
-                                        "Use permutations when order matters",
-                                        "Use combinations when order doesn't matter",
-                                        "Factorial (n!) = n × (n-1) × ... × 1",
-                                        "Always identify if repetition is allowed"
-                                    ]
-                                },
-                                problems: [
-                                    {
-                                        question: "How many ways can you arrange 3 books from 5 books?",
-                                        options: ["60", "10", "15", "125"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "Choose 3 books from 5?",
-                                        options: ["60", "10", "15", "20"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "Factorial 4! = ?",
-                                        options: ["24", "12", "20", "16"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "P(6,2) = ?",
-                                        options: ["30", "36", "15", "12"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "C(6,2) = ?",
-                                        options: ["15", "20", "10", "30"],
-                                        correct: 0
-                                    }
-                                ]
+                                question: "Find A - B for A={1,2,3}, B={2,3,4}",
+                                options: ["{1}", "{2}", "{3}", "∅"],
+                                correct: 0
                             },
                             {
-                                id: 5,
-                                name: "Number Theory",
-                                description: "Prime numbers, divisibility, and modular arithmetic",
-                                completed: false,
-                                formulas: ["gcd(a,b)", "a ≡ b (mod n)"],
-                                learningContent: {
-                                    introduction: "Study of integers and their properties.",
-                                    youtubeLink: "https://youtu.be/YcYmbcwmRwQ?si=gG5D1v_gy_c6sivx",
-                                    concepts: [
-                                        {
-                                            title: "Divisibility",
-                                            content: "a divisible by b if a=bk.",
-                                            example: "20 divisible by 5"
-                                        },
-                                        {
-                                            title: "Prime Numbers",
-                                            content: "Prime >1 no divisors.",
-                                            example: "2,3,5,7"
-                                        },
-                                        {
-                                            title: "GCD",
-                                            content: "Largest integer dividing both.",
-                                            example: "gcd(18,24)=6"
-                                        },
-                                        {
-                                            title: "LCM",
-                                            content: "Smallest common multiple.",
-                                            example: "lcm(4,6)=12"
-                                        },
-                                        {
-                                            title: "Modular Arithmetic",
-                                            content: "a≡b(mod n).",
-                                            example: "17≡5(mod 12)"
-                                        }
-                                    ],
-                                    keyPoints: ["Primes are building blocks", "Euclidean algorithm", "LCM×GCD=product", "Modular arithmetic important"]
-                                },
-                                problems: [
-                                    {
-                                        question: "gcd(24,36)?",
-                                        options: ["6", "12", "18", "24"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "Which is prime?",
-                                        options: ["21", "29", "33", "39"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "If a≡2(mod5), b≡3(mod5), (a+b)mod5?",
-                                        options: ["0", "1", "4", "5"],
-                                        correct: 0
-                                    },
-                                    {
-                                        question: "LCM(8,12)?",
-                                        options: ["16", "24", "48", "96"],
-                                        correct: 1
-                                    },
-                                    {
-                                        question: "Which congruence true?",
-                                        options: ["15≡3(mod4)", "20≡3(mod5)", "10≡1(mod2)", "14≡1(mod7)"],
-                                        correct: 0
-                                    }
-                                ]
+                                question: "If U={1,2,3,4,5}, A={1,2}, find A'",
+                                options: ["{1,2,3}", "{3,4,5}", "{2,3,4}", "{5}"],
+                                correct: 1
                             },
                             {
-                                id: 6,
-                                name: "Relations",
-                                description: "Binary relations, equivalence, and ordering",
-                                completed: false,
-                                formulas: ["R ⊆ A × B", "R⁻¹"],
-                                problems: []
-                            },
-                            {
-                                id: 7,
-                                name: "Functions",
-                                description: "Domain, range, injective, surjective functions",
-                                completed: false,
-                                formulas: ["f: A → B", "f⁻¹"],
-                                problems: []
-                            },
-                            {
-                                id: 8,
-                                name: "Algorithms",
-                                description: "Complexity analysis and basic algorithms",
-                                completed: false,
-                                formulas: ["O(n)", "Θ(n)", "Ω(n)"],
-                                problems: []
+                                question: "Which is true?",
+                                options: ["{1,2} ⊆ {1,2,3}", "{4} ∈ {1,2,3}", "∅ ⊆ ∅ is false", "Order matters in sets"],
+                                correct: 0
                             }
-                        ];
+                        ]
+                    },
+                    {
+                        id: 2,
+                        name: "Logic & Proofs",
+                        description: "Propositional logic, truth tables, and proof techniques",
+                        completed: false,
+                        formulas: ["P ∧ Q", "P ∨ Q", "P → Q", "¬P"],
+                        learningContent: {
+                            introduction: "Logic is the foundation of mathematical reasoning and computer science. It helps us determine what is true or false.",
+                            youtubeLink: "https://youtu.be/HIkIqt_ytdc?si=nPo3ODFdYHrip233",
+                            concepts: [
+                                {
+                                    title: "Propositions",
+                                    content: "A proposition is a statement that is either true or false, but not both.",
+                                    example: "'The sky is blue' is a proposition (true)\n'2 + 2 = 5' is a proposition (false)\n'What time is it?' is NOT a proposition"
+                                },
+                                {
+                                    title: "Logical Operators",
+                                    content: "We can combine propositions using logical operators:",
+                                    example: "AND (∧): Both must be true\nOR (∨): At least one must be true\nNOT (¬): Opposite truth value\nIMPLIES (→): If P then Q"
+                                },
+                                {
+                                    title: "Truth Tables",
+                                    content: "Truth tables show all possible truth values for logical expressions.",
+                                    example: "P | Q | P∧Q | P∨Q\nT | T |  T  |  T\nT | F |  F  |  T\nF | T |  F  |  T\nF | F |  F  |  F"
+                                }
+                            ],
+                            keyPoints: [
+                                "Every proposition has exactly one truth value",
+                                "Logical operators follow specific rules",
+                                "Truth tables help verify logical equivalences",
+                                "Proofs use logical reasoning to establish truth"
+                            ]
+                        },
+                        problems: [
+                            {
+                                question: "What is the truth value of (T ∧ F) ∨ T?",
+                                options: ["True", "False", "Cannot determine", "Both"],
+                                correct: 0
+                            },
+                            {
+                                question: "Negation of True?",
+                                options: ["True", "False"],
+                                correct: 1
+                            },
+                            {
+                                question: "If P is true, Q is false, what is P → Q?", options: ["True", "False"], correct: 1
+                            },
+                            {
+                                question: "If P=false, Q=false, what is P ∨ Q?",
+                                options: ["True", "False"],
+                                correct: 1
+                            },
+                            {
+                                question: "Which is tautology?",
+                                options: ["P ∨ ¬P", "P ∧ ¬P", "P → Q", "Q → P"],
+                                correct: 0
+                            }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        name: "Graph Theory",
+                        description: "Vertices, edges, paths, and graph algorithms",
+                        completed: false,
+                        formulas: ["V - E + F = 2", "Σdeg(v) = 2|E|"],
+                        learningContent: {
+                            introduction: "Graph theory studies networks of connected objects. It's essential for understanding social networks, computer networks, and many algorithms.",
+                            youtubeLink: "https://youtu.be/LFKZLXVO-Dg?si=9P9RrExU4J1sQCEV",
+                            concepts: [
+                                {
+                                    title: "Basic Components",
+                                    content: "A graph consists of vertices (nodes) connected by edges (links).",
+                                    example: "Vertices: Cities in a map\nEdges: Roads connecting cities\nGraph: The entire road network"
+                                },
+                                {
+                                    title: "Types of Graphs",
+                                    content: "Graphs can be directed or undirected, weighted or unweighted.",
+                                    example: "Directed: One-way streets\nUndirected: Two-way streets\nWeighted: Roads with distances\nUnweighted: Just connections"
+                                },
+                                {
+                                    title: "Graph Properties",
+                                    content: "Important properties include degree, paths, cycles, and connectivity.",
+                                    example: "Degree: Number of connections to a vertex\nPath: Route from one vertex to another\nCycle: Path that returns to starting vertex"
+                                }
+                            ],
+                            keyPoints: [
+                                "Graphs model relationships between objects",
+                                "Degree of vertex = number of incident edges",
+                                "Sum of all degrees = 2 × number of edges",
+                                "Many real-world problems use graph algorithms"
+                            ]
+                        },
+                        problems: [
+                            {
+                                question: "In a complete graph with 5 vertices, how many edges are there?",
+                                options: ["10", "15", "20", "25"],
+                                correct: 0
+                            },
+                            {
+                                question: "Degree of each vertex in complete graph K4?",
+                                options: ["2", "3", "4", "6"],
+                                correct: 1
+                            },
+                            {
+                                question: "In a tree with 7 vertices, edges=?",
+                                options: ["6", "7", "8", "5"],
+                                correct: 0
+                            },
+                            {
+                                question: "Which is Eulerian?",
+                                options: ["All vertices even degree", "All vertices odd degree", "Exactly 2 odd", "None"],
+                                correct: 0
+                            },
+                            {
+                                question: "Which is planar?",
+                                options: ["K3,3", "K5", "K4", "K6"],
+                                correct: 2
+                            }
 
-                        // HashMap for formulas by category
-                        this.formulas = new Map([
-                            ['Set Theory', [
-                                { name: 'Union', formula: 'A ∪ B', description: 'All elements in A or B or both' },
-                                { name: 'Intersection', formula: 'A ∩ B', description: 'Elements common to both A and B' },
-                                { name: 'Difference', formula: 'A - B', description: 'Elements in A but not in B' },
-                                { name: 'Complement', formula: "A'", description: 'Elements not in A' }
-                            ]],
-                            ['Logic & Proofs', [
-                                { name: 'Conjunction', formula: 'P ∧ Q', description: 'P and Q' },
-                                { name: 'Disjunction', formula: 'P ∨ Q', description: 'P or Q' },
-                                { name: 'Implication', formula: 'P → Q', description: 'If P then Q' },
-                                { name: 'Negation', formula: '¬P', description: 'Not P' }
-                            ]],
-                            ['Combinatorics', [
-                                { name: 'Permutation', formula: 'P(n,r) = n!/(n-r)!', description: 'Arrangements of r items from n items' },
-                                { name: 'Combination', formula: 'C(n,r) = n!/(r!(n-r)!)', description: 'Selections of r items from n items' },
-                                { name: 'Factorial', formula: 'n! = n × (n-1) × ... × 1', description: 'Product of positive integers up to n' }
-                            ]]
-                        ]);
+                        ]
+                    },
+                    {
+                        id: 4,
+                        name: "Combinatorics",
+                        description: "Counting principles, permutations, and combinations",
+                        completed: false,
+                        formulas: ["P(n,r) = n!/(n-r)!", "C(n,r) = n!/(r!(n-r)!)"],
+                        learningContent: {
+                            introduction: "Combinatorics is the art of counting. It helps us determine how many ways we can arrange, select, or organize objects.",
+                            youtubeLink: "https://youtu.be/ied31kWht7Y?si=Q9Nn_mDz4jsN3TWM",
+                            concepts: [
+                                {
+                                    title: "Fundamental Counting Principle",
+                                    content: "If one event can occur in m ways and another in n ways, then both can occur in m × n ways.",
+                                    example: "Choosing outfit: 3 shirts × 2 pants = 6 different outfits\nPassword: 26 letters × 10 digits = 260 combinations for 2 characters"
+                                },
+                                {
+                                    title: "Permutations",
+                                    content: "Arrangements where order matters. P(n,r) = n!/(n-r)!",
+                                    example: "Arranging 3 books from 5: P(5,3) = 5!/(5-3)! = 5!/2! = 60\nFirst place: 5 choices, Second: 4 choices, Third: 3 choices"
+                                },
+                                {
+                                    title: "Combinations",
+                                    content: "Selections where order doesn't matter. C(n,r) = n!/(r!(n-r)!)",
+                                    example: "Choosing 3 books from 5: C(5,3) = 5!/(3!×2!) = 10\nSame selection regardless of order"
+                                }
+                            ],
+                            keyPoints: [
+                                "Use permutations when order matters",
+                                "Use combinations when order doesn't matter",
+                                "Factorial (n!) = n × (n-1) × ... × 1",
+                                "Always identify if repetition is allowed"
+                            ]
+                        },
+                        problems: [
+                            {
+                                question: "How many ways can you arrange 3 books from 5 books?",
+                                options: ["60", "10", "15", "125"],
+                                correct: 0
+                            },
+                            {
+                                question: "Choose 3 books from 5?",
+                                options: ["60", "10", "15", "20"],
+                                correct: 1
+                            },
+                            {
+                                question: "Factorial 4! = ?",
+                                options: ["24", "12", "20", "16"],
+                                correct: 0
+                            },
+                            {
+                                question: "P(6,2) = ?",
+                                options: ["30", "36", "15", "12"],
+                                correct: 0
+                            },
+                            {
+                                question: "C(6,2) = ?",
+                                options: ["15", "20", "10", "30"],
+                                correct: 0
+                            }
+                        ]
+                    },
+                    {
+                        id: 5,
+                        name: "Number Theory",
+                        description: "Prime numbers, divisibility, and modular arithmetic",
+                        completed: false,
+                        formulas: ["gcd(a,b)", "a ≡ b (mod n)"],
+                        learningContent: {
+                            introduction: "Study of integers and their properties.",
+                            youtubeLink: "https://youtu.be/YcYmbcwmRwQ?si=gG5D1v_gy_c6sivx",
+                            concepts: [
+                                {
+                                    title: "Divisibility",
+                                    content: "a divisible by b if a=bk.",
+                                    example: "20 divisible by 5"
+                                },
+                                {
+                                    title: "Prime Numbers",
+                                    content: "Prime >1 no divisors.",
+                                    example: "2,3,5,7"
+                                },
+                                {
+                                    title: "GCD",
+                                    content: "Largest integer dividing both.",
+                                    example: "gcd(18,24)=6"
+                                },
+                                {
+                                    title: "LCM",
+                                    content: "Smallest common multiple.",
+                                    example: "lcm(4,6)=12"
+                                },
+                                {
+                                    title: "Modular Arithmetic",
+                                    content: "a≡b(mod n).",
+                                    example: "17≡5(mod 12)"
+                                }
+                            ],
+                            keyPoints: ["Primes are building blocks", "Euclidean algorithm", "LCM×GCD=product", "Modular arithmetic important"]
+                        },
+                        problems: [
+                            {
+                                question: "gcd(24,36)?",
+                                options: ["6", "12", "18", "24"],
+                                correct: 1
+                            },
+                            {
+                                question: "Which is prime?",
+                                options: ["21", "29", "33", "39"],
+                                correct: 1
+                            },
+                            {
+                                question: "If a≡2(mod5), b≡3(mod5), (a+b)mod5?",
+                                options: ["0", "1", "4", "5"],
+                                correct: 0
+                            },
+                            {
+                                question: "LCM(8,12)?",
+                                options: ["16", "24", "48", "96"],
+                                correct: 1
+                            },
+                            {
+                                question: "Which congruence true?",
+                                options: ["15≡3(mod4)", "20≡3(mod5)", "10≡1(mod2)", "14≡1(mod7)"],
+                                correct: 0
+                            }
+                        ]
+                    },
+                    {
+                        id: 6,
+                        name: "Relations",
+                        description: "Binary relations, equivalence, and ordering",
+                        completed: false,
+                        formulas: ["R ⊆ A × B", "R⁻¹"],
+                        problems: []
+                    },
+                    {
+                        id: 7,
+                        name: "Functions",
+                        description: "Domain, range, injective, surjective functions",
+                        completed: false,
+                        formulas: ["f: A → B", "f⁻¹"],
+                        problems: []
+                    },
+                    {
+                        id: 8,
+                        name: "Algorithms",
+                        description: "Complexity analysis and basic algorithms",
+                        completed: false,
+                        formulas: ["O(n)", "Θ(n)", "Ω(n)"],
+                        problems: []
+                    }
+                ];
 
-                        // Current user data
-                        this.currentUser = null;
+                // HashMap for formulas by category
+                this.formulas = new Map([
+                    ['Set Theory', [
+                        { name: 'Union', formula: 'A ∪ B', description: 'All elements in A or B or both' },
+                        { name: 'Intersection', formula: 'A ∩ B', description: 'Elements common to both A and B' },
+                        { name: 'Difference', formula: 'A - B', description: 'Elements in A but not in B' },
+                        { name: 'Complement', formula: "A'", description: 'Elements not in A' }
+                    ]],
+                    ['Logic & Proofs', [
+                        { name: 'Conjunction', formula: 'P ∧ Q', description: 'P and Q' },
+                        { name: 'Disjunction', formula: 'P ∨ Q', description: 'P or Q' },
+                        { name: 'Implication', formula: 'P → Q', description: 'If P then Q' },
+                        { name: 'Negation', formula: '¬P', description: 'Not P' }
+                    ]],
+                    ['Combinatorics', [
+                        { name: 'Permutation', formula: 'P(n,r) = n!/(n-r)!', description: 'Arrangements of r items from n items' },
+                        { name: 'Combination', formula: 'C(n,r) = n!/(r!(n-r)!)', description: 'Selections of r items from n items' },
+                        { name: 'Factorial', formula: 'n! = n × (n-1) × ... × 1', description: 'Product of positive integers up to n' }
+                    ]]
+                ]);
 
-                        // Activity log (Array)
-                        this.activities = [];
+                // Current user data
+                this.currentUser = null;
+
+                // Activity log (Array)
+                this.activities = [];
+
+                // Load persisted data from localStorage (simple JSON object/array storage)
+                this.loadFromStorage();
+            }
+
+            // Persist data to localStorage using simple JSON serialization
+            saveToStorage() {
+                try {
+                    // Store users as a simple object (email as key, user object as value)
+                    const usersObj = Object.fromEntries(this.users);
+                    localStorage.setItem('discmath_users', JSON.stringify(usersObj));
+
+                    // Store activities as array
+                    localStorage.setItem('discmath_activities', JSON.stringify(this.activities));
+
+                    // Store current user email (to restore on load)
+                    if (this.currentUser) {
+                        localStorage.setItem('discmath_currentUserEmail', this.currentUser.email);
+                    }
+                } catch (error) {
+                    console.error('Failed to save to localStorage:', error);
+                }
+            }
+
+            // Load data from localStorage
+            loadFromStorage() {
+                try {
+                    // Load users
+                    const usersStr = localStorage.getItem('discmath_users');
+                    if (usersStr) {
+                        const usersObj = JSON.parse(usersStr);
+                        this.users = new Map(Object.entries(usersObj));
                     }
 
-                    // User management methods
-                    setUser(userData) {
-                        this.currentUser = {
-                            name: userData.name,
-                            email: userData.email,
-                            score: 0,
-                            completedTopics: 0,
-                            streak: 0,
-                            joinDate: new Date().toISOString()
-                        };
-                        this.users.set(userData.email, this.currentUser);
+                    // Load activities
+                    const activitiesStr = localStorage.getItem('discmath_activities');
+                    if (activitiesStr) {
+                        this.activities = JSON.parse(activitiesStr);
+                    }
+
+                    // Restore current user if email is stored
+                    const currentEmail = localStorage.getItem('discmath_currentUserEmail');
+                    if (currentEmail && this.users.has(currentEmail)) {
+                        this.currentUser = this.users.get(currentEmail);
                         this.updateUI();
-                    }
-
-                    // Add activity to log
-                    addActivity(activity) {
-                        this.activities.unshift({
-                            ...activity,
-                            timestamp: new Date().toISOString()
-                        });
-                        if (this.activities.length > 10) {
-                            this.activities.pop(); // Keep only last 10 activities
-                        }
                         this.updateRecentActivity();
                     }
+                } catch (error) {
+                    console.error('Failed to load from localStorage:', error);
+                }
+            }
 
-                    // Update topic completion
-                    completeTopicProblem(topicId, score) {
-                        const topic = this.topics.find(t => t.id === topicId);
-                        if (topic && this.currentUser) {
-                            if (!topic.completed) {
-                                topic.completed = true;
-                                this.currentUser.completedTopics++;
-                                this.addActivity({
-                                    type: 'topic_completed',
-                                    message: `Completed ${topic.name}`,
-                                    score: score
-                                });
-                            }
-                            this.currentUser.score += score;
-                            this.updateUI();
-                        }
+            // User management methods
+            setUser(userData) {
+                this.currentUser = {
+                    name: userData.name,
+                    email: userData.email,
+                    score: 0,
+                    completedTopics: 0,
+                    streak: 0,
+                    joinDate: new Date().toISOString()
+                };
+                this.users.set(userData.email, this.currentUser);
+                this.updateUI();
+                this.saveToStorage(); // Persist after setting
+            }
+
+            // Add activity to log
+            addActivity(activity) {
+                this.activities.unshift({
+                    ...activity,
+                    timestamp: new Date().toISOString()
+                });
+                if (this.activities.length > 10) {
+                    this.activities.pop(); // Keep only last 10 activities
+                }
+                this.updateRecentActivity();
+                this.saveToStorage(); // Persist activities
+            }
+
+            // Update topic completion
+            completeTopicProblem(topicId, score) {
+                const topic = this.topics.find(t => t.id === topicId);
+                if (topic && this.currentUser) {
+                    if (!topic.completed) {
+                        topic.completed = true;
+                        this.currentUser.completedTopics++;
+                        this.addActivity({
+                            type: 'topic_completed',
+                            message: `Completed ${topic.name}`,
+                            score: score
+                        });
                     }
+                    this.currentUser.score += score;
+                    this.updateUI();
+                    this.saveToStorage(); // Persist after update
+                }
+            }
 
-                    // UI Update methods
-                    updateUI() {
-                        if (!this.currentUser) return;
+            // Update profile (now persists changes)
+            updateProfile(name, email) {
+                if (!this.currentUser) return;
 
-                        document.getElementById('userName').textContent = this.currentUser.name;
-                        document.getElementById('userInitial').textContent = this.currentUser.name.charAt(0).toUpperCase();
-                        document.getElementById('userScore').textContent = `Score: ${this.currentUser.score}`;
-                        document.getElementById('completedTopics').textContent = `${this.currentUser.completedTopics}/8`;
-                        document.getElementById('practiceScore').textContent = this.currentUser.score;
-                        document.getElementById('studyStreak').textContent = `${this.currentUser.streak} days`;
+                // Update current user
+                this.currentUser.name = name;
+                this.currentUser.email = email;
 
-                        const progress = (this.currentUser.completedTopics / 8) * 100;
-                        document.getElementById('topicProgress').style.width = `${progress}%`;
-                        document.getElementById('userProgress').textContent = `${Math.round(progress)}% Complete`;
-                    }
+                // Update in users map (re-set with new email if changed)
+                this.users.delete(this.currentUser.email); // Remove old entry if email changed
+                this.users.set(email, this.currentUser);
 
-                    updateRecentActivity() {
-                        const container = document.getElementById('recentActivity');
-                        if (this.activities.length === 0) {
-                            container.innerHTML = '<p class="text-gray-500 text-center py-8">No recent activity. Start learning to see your progress here!</p>';
-                            return;
-                        }
+                this.updateUI();
+                this.saveToStorage(); // Persist profile changes
+            }
 
-                        container.innerHTML = this.activities.map(activity => `
+            // UI Update methods
+            updateUI() {
+                if (!this.currentUser) return;
+
+                document.getElementById('userName').textContent = this.currentUser.name;
+                document.getElementById('userInitial').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                document.getElementById('userScore').textContent = `Score: ${this.currentUser.score}`;
+                document.getElementById('completedTopics').textContent = `${this.currentUser.completedTopics}/8`;
+                document.getElementById('practiceScore').textContent = this.currentUser.score;
+                document.getElementById('studyStreak').textContent = `${this.currentUser.streak} days`;
+
+                const progress = (this.currentUser.completedTopics / 8) * 100;
+                document.getElementById('topicProgress').style.width = `${progress}%`;
+                document.getElementById('userProgress').textContent = `${Math.round(progress)}% Complete`;
+            }
+
+            updateRecentActivity() {
+                const container = document.getElementById('recentActivity');
+                if (this.activities.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center py-8">No recent activity. Start learning to see your progress here!</p>';
+                    return;
+                }
+
+                container.innerHTML = this.activities.map(activity => `
                     <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                         <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
                             <span class="text-purple-600 text-sm">✓</span>
@@ -1074,68 +1157,68 @@
                         <span class="text-xs text-gray-500">${new Date(activity.timestamp).toLocaleDateString()}</span>
                     </div>
                 `).join('');
-                    }
-                }
+            }
+        }
 
-                // Initialize data store
-                const dataStore = new DataStore();
-                let currentPage = 'dashboard';
-                let currentPractice = null;
+        // Initialize data store
+        const dataStore = new DataStore();
+        let currentPage = 'dashboard';
+        let currentPractice = null;
 
-                // Page titles
-                const pageInfo = {
-                    dashboard: { title: 'Dashboard', subtitle: 'Welcome back! Continue your learning journey' },
-                    topics: { title: 'Learning Topics', subtitle: 'Explore discrete mathematics concepts' },
-                    formulas: { title: 'Formula Reference', subtitle: 'Quick reference for important formulas' },
-                    practice: { title: 'Practice Problems', subtitle: 'Test your understanding with problems' },
-                    profile: { title: 'Profile Settings', subtitle: 'Manage your account preferences' }
-                };
+        // Page titles
+        const pageInfo = {
+            dashboard: { title: 'Dashboard', subtitle: 'Welcome back! Continue your learning journey' },
+            topics: { title: 'Learning Topics', subtitle: 'Explore discrete mathematics concepts' },
+            formulas: { title: 'Formula Reference', subtitle: 'Quick reference for important formulas' },
+            practice: { title: 'Practice Problems', subtitle: 'Test your understanding with problems' },
+            profile: { title: 'Profile Settings', subtitle: 'Manage your account preferences' }
+        };
 
-                // Authentication functions
-                function showLogin() {
-                    document.getElementById('loginModal').classList.remove('hidden');
-                    document.getElementById('loginModal').classList.add('flex');
-                }
+        // Authentication functions
+        function showLogin() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginModal').classList.add('flex');
+        }
 
-                function closeLogin() {
-                    document.getElementById('loginModal').classList.add('hidden');
-                    document.getElementById('loginModal').classList.remove('flex');
-                }
+        function closeLogin() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('flex');
+        }
 
-                function handleLogin(event) {
-                    event.preventDefault();
+        function handleLogin(event) {
+            event.preventDefault();
 
-                    const nameInput = event.target.querySelector('input[type="text"]');
-                    const emailInput = event.target.querySelector('input[type="email"]');
-                    const submitButton = event.target.querySelector('button[type="submit"]');
+            const nameInput = event.target.querySelector('input[type="text"]');
+            const emailInput = event.target.querySelector('input[type="email"]');
+            const submitButton = event.target.querySelector('button[type="submit"]');
 
-                    const name = nameInput.value.trim();
-                    const email = emailInput.value.trim();
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
 
-                    // Clear previous error states
-                    nameInput.classList.remove('border-red-500');
-                    emailInput.classList.remove('border-red-500');
+            // Clear previous error states
+            nameInput.classList.remove('border-red-500');
+            emailInput.classList.remove('border-red-500');
 
-                    // Validation
-                    let hasErrors = false;
+            // Validation
+            let hasErrors = false;
 
-                    if (!name || name.length < 2) {
-                        nameInput.classList.add('border-red-500');
-                        showMessage('Please enter a valid name (at least 2 characters)', 'error');
-                        hasErrors = true;
-                    }
+            if (!name || name.length < 2) {
+                nameInput.classList.add('border-red-500');
+                showMessage('Please enter a valid name (at least 2 characters)', 'error');
+                hasErrors = true;
+            }
 
-                    if (!email || !isValidEmail(email)) {
-                        emailInput.classList.add('border-red-500');
-                        showMessage('Please enter a valid email address', 'error');
-                        hasErrors = true;
-                    }
+            if (!email || !isValidEmail(email)) {
+                emailInput.classList.add('border-red-500');
+                showMessage('Please enter a valid email address', 'error');
+                hasErrors = true;
+            }
 
-                    if (hasErrors) return;
+            if (hasErrors) return;
 
-                    // Show loading state
-                    submitButton.disabled = true;
-                    submitButton.innerHTML = `
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
                 <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -1143,106 +1226,112 @@
                 Signing In...
             `;
 
-                    // Simulate authentication process
-                    setTimeout(() => {
-                        try {
-                            // Check if user already exists
-                            const existingUser = dataStore.users.get(email);
+            // Simulate authentication process
+            setTimeout(() => {
+                try {
+                    // Check if user already exists
+                    const existingUser = dataStore.users.get(email);
 
-                            if (existingUser) {
-                                // Returning user
-                                dataStore.currentUser = existingUser;
-                                dataStore.currentUser.name = name; // Update name in case it changed
-                                showMessage(`Welcome back, ${name}!`, 'success');
-                            } else {
-                                // New user
-                                dataStore.setUser({ name, email });
-                                showMessage(`Welcome to DiscMath Companion, ${name}!`, 'success');
-                            }
+                    if (existingUser) {
+                        // Returning user
+                        dataStore.currentUser = existingUser;
+                        dataStore.currentUser.name = name; // Update name in case it changed
+                        showMessage(`Welcome back, ${name}!`, 'success');
+                    } else {
+                        // New user
+                        dataStore.setUser({ name, email });
+                        showMessage(`Welcome to DiscMath Companion, ${name}!`, 'success');
+                    }
 
-                            // Reset form
-                            event.target.reset();
+                    // Reset form
+                    event.target.reset();
 
-                            // Close modal and show dashboard
-                            closeLogin();
-                            showDashboard();
-
-                        } catch (error) {
-                            showMessage('Sign in failed. Please try again.', 'error');
-                        } finally {
-                            // Reset button state
-                            submitButton.disabled = false;
-                            submitButton.innerHTML = 'Sign In';
-                        }
-                    }, 1500); // Simulate network delay
-                }
-
-                function isValidEmail(email) {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    return emailRegex.test(email);
-                }
-
-                function continueAsGuest() {
-                    closeLogin(); // Ensure modal is closed
-                    dataStore.setUser({ name: 'Guest User', email: 'guest@example.com' });
+                    // Close modal and show dashboard
+                    closeLogin();
                     showDashboard();
+
+                } catch (error) {
+                    showMessage('Sign in failed. Please try again.', 'error');
+                } finally {
+                    // Reset button state
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Sign In';
                 }
+            }, 1500); // Simulate network delay
+        }
 
-                function logout() {
-                    dataStore.currentUser = null;
-                    document.getElementById('dashboardPage').classList.add('hidden');
-                    document.getElementById('landingPage').classList.remove('hidden');
-                }
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
 
-                function showDashboard() {
-                    document.getElementById('landingPage').classList.add('hidden');
-                    document.getElementById('dashboardPage').classList.remove('hidden');
-                    loadTopics();
-                    loadFormulas();
-                    loadPracticeTopics();
-                }
+        function continueAsGuest() {
+            closeLogin(); // Ensure modal is closed
+            dataStore.setUser({ name: 'Guest User', email: 'guest@example.com' });
+            showDashboard();
+        }
 
-                // Navigation
-                function showPage(pageName) {
-                    // Hide all content
-                    const contents = ['dashboardContent', 'topicsContent', 'formulasContent', 'practiceContent', 'profileContent'];
-                    contents.forEach(content => {
-                        document.getElementById(content).classList.add('hidden');
-                    });
+        function logout() {
+            dataStore.currentUser = null;
+            localStorage.removeItem('discmath_currentUserEmail'); // Clear current user
+            document.getElementById('dashboardPage').classList.add('hidden');
+            document.getElementById('landingPage').classList.remove('hidden');
+        }
 
-                    // Also hide learning content if it exists
-                    const learningContainer = document.getElementById('learningContent');
-                    if (learningContainer) {
-                        learningContainer.classList.add('hidden');
-                    }
+        function showDashboard() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.remove('hidden');
+            loadTopics();
+            loadFormulas();
+            loadPracticeTopics();
+        }
 
-                    // Show selected content
-                    document.getElementById(pageName + 'Content').classList.remove('hidden');
+        // Navigation
+        function showPage(pageName) {
+            // Hide all content
+            const contents = ['dashboardContent', 'topicsContent', 'formulasContent', 'practiceContent', 'profileContent'];
+            contents.forEach(content => {
+                document.getElementById(content).classList.add('hidden');
+            });
 
-                    // Update page info
-                    const info = pageInfo[pageName];
-                    document.getElementById('pageTitle').textContent = info.title;
-                    document.getElementById('pageSubtitle').textContent = info.subtitle;
+            // Also hide learning content if it exists
+            const learningContainer = document.getElementById('learningContent');
+            if (learningContainer) {
+                learningContainer.classList.add('hidden');
+            }
 
-                    // Update sidebar
-                    document.querySelectorAll('.sidebar-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    document.querySelector(`[onclick="showPage('${pageName}')"]`).classList.add('active');
+            // Show selected content
+            document.getElementById(pageName + 'Content').classList.remove('hidden');
 
-                    currentPage = pageName;
+            // Update page info
+            const info = pageInfo[pageName];
+            document.getElementById('pageTitle').textContent = info.title;
+            document.getElementById('pageSubtitle').textContent = info.subtitle;
 
-                    // Load profile data if on profile page
-                    if (pageName === 'profile' && dataStore.currentUser) {
-                        document.getElementById('profileName').value = dataStore.currentUser.name;
-                        document.getElementById('profileEmail').value = dataStore.currentUser.email;
-                    }
-                }
+            // Update sidebar
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showPage('${pageName}')"]`).classList.add('active');
 
-                // Load topics
-                function loadTopics() {
-                    const container = document.getElementById('topicsList');
-                    container.innerHTML = dataStore.topics.map(topic => `
+            currentPage = pageName;
+
+            // Load profile data if on profile page
+            if (pageName === 'profile' && dataStore.currentUser) {
+                const joinDate = new Date(dataStore.currentUser.joinDate).toISOString().split('T')[0];
+                document.getElementById('profileDisplayName').textContent = dataStore.currentUser.name;
+                document.getElementById('profileDisplayEmail').textContent = dataStore.currentUser.email;
+                document.getElementById('profileJoinDate').textContent = joinDate;
+                document.getElementById('profileInitial').textContent = dataStore.currentUser.name.charAt(0).toUpperCase();
+                document.getElementById('profileName').value = dataStore.currentUser.name;
+                document.getElementById('profileEmail').value = dataStore.currentUser.email;
+            }
+        }
+
+        // Load topics
+        function loadTopics() {
+            const container = document.getElementById('topicsList');
+            container.innerHTML = dataStore.topics.map(topic => `
                 <div class="card topic-card p-6">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex-1">
@@ -1268,15 +1357,15 @@
                     </div>
                 </div>
             `).join('');
-                }
+        }
 
-                // Load formulas
-                function loadFormulas() {
-                    const container = document.getElementById('formulasList');
-                    let html = '';
+        // Load formulas
+        function loadFormulas() {
+            const container = document.getElementById('formulasList');
+            let html = '';
 
-                    dataStore.formulas.forEach((formulas, category) => {
-                        html += `
+            dataStore.formulas.forEach((formulas, category) => {
+                html += `
                     <div class="card p-6">
                         <h3 class="text-xl font-semibold text-purple-600 mb-4">${category}</h3>
                         <div class="space-y-3">
@@ -1292,46 +1381,46 @@
                         </div>
                     </div>
                 `;
-                    });
+            });
 
-                    container.innerHTML = html;
-                }
+            container.innerHTML = html;
+        }
 
-                // Load practice topics
-                function loadPracticeTopics() {
-                    const container = document.getElementById('practiceTopics');
-                    container.innerHTML = dataStore.topics.filter(topic => topic.problems.length > 0).map(topic => `
+        // Load practice topics
+        function loadPracticeTopics() {
+            const container = document.getElementById('practiceTopics');
+            container.innerHTML = dataStore.topics.filter(topic => topic.problems.length > 0).map(topic => `
                 <button onclick="startPractice(${topic.id})" class="card p-4 text-left hover:scale-105 transition-all">
                     <h4 class="font-semibold text-gray-900 mb-2">${topic.name}</h4>
                     <p class="text-gray-600 text-sm">${topic.problems.length} problems available</p>
                 </button>
             `).join('');
-                }
+        }
 
-                // Learning function
-                function learnTopic(topicId) {
-                    const topic = dataStore.topics.find(t => t.id === topicId);
-                    if (!topic || !topic.learningContent) {
-                        showMessage('Learning content for this topic is coming soon!', 'info');
-                        return;
-                    }
+        // Learning function
+        function learnTopic(topicId) {
+            const topic = dataStore.topics.find(t => t.id === topicId);
+            if (!topic || !topic.learningContent) {
+                showMessage('Learning content for this topic is coming soon!', 'info');
+                return;
+            }
 
-                    showLearningContent(topic);
-                }
+            showLearningContent(topic);
+        }
 
-                function showLearningContent(topic) {
-                    // Hide all content sections
-                    const contents = ['dashboardContent', 'topicsContent', 'formulasContent', 'practiceContent', 'profileContent'];
-                    contents.forEach(content => {
-                        document.getElementById(content).classList.add('hidden');
-                    });
+        function showLearningContent(topic) {
+            // Hide all content sections
+            const contents = ['dashboardContent', 'topicsContent', 'formulasContent', 'practiceContent', 'profileContent'];
+            contents.forEach(content => {
+                document.getElementById(content).classList.add('hidden');
+            });
 
-                    // Update page info
-                    document.getElementById('pageTitle').textContent = `Learning: ${topic.name}`;
-                    document.getElementById('pageSubtitle').textContent = 'Master the concepts step by step';
+            // Update page info
+            document.getElementById('pageTitle').textContent = `Learning: ${topic.name}`;
+            document.getElementById('pageSubtitle').textContent = 'Master the concepts step by step';
 
-                    // Create learning content
-                    const learningHTML = `
+            // Create learning content
+            const learningHTML = `
                 <div class="max-w-4xl mx-auto">
                     <!-- Back Button -->
                     <button onclick="showPage('topics')" class="mb-6 flex items-center space-x-2 text-purple-600 hover:text-purple-700 font-medium">
@@ -1394,59 +1483,59 @@
                 </div>
             `;
 
-                    // Create or update learning content container
-                    let learningContainer = document.getElementById('learningContent');
-                    if (!learningContainer) {
-                        learningContainer = document.createElement('div');
-                        learningContainer.id = 'learningContent';
-                        learningContainer.className = 'p-6';
-                        document.querySelector('.ml-64').appendChild(learningContainer);
-                    }
+            // Create or update learning content container
+            let learningContainer = document.getElementById('learningContent');
+            if (!learningContainer) {
+                learningContainer = document.createElement('div');
+                learningContainer.id = 'learningContent';
+                learningContainer.className = 'p-6';
+                document.querySelector('.ml-64').appendChild(learningContainer);
+            }
 
-                    learningContainer.innerHTML = learningHTML;
-                    learningContainer.classList.remove('hidden');
+            learningContainer.innerHTML = learningHTML;
+            learningContainer.classList.remove('hidden');
 
-                    // Mark as viewed
-                    dataStore.addActivity({
-                        type: 'topic_viewed',
-                        message: `Studied ${topic.name}`,
-                        score: 5
-                    });
-                }
+            // Mark as viewed
+            dataStore.addActivity({
+                type: 'topic_viewed',
+                message: `Studied ${topic.name}`,
+                score: 5
+            });
+        }
 
-                // Practice functions
-                function startTopicPractice(topicId) {
-                    const topic = dataStore.topics.find(t => t.id === topicId);
-                    if (topic.problems.length > 0) {
-                        showPage('practice');
-                        startPractice(topicId);
-                    } else {
-                        showMessage('Practice problems for this topic are coming soon!', 'info');
-                    }
-                }
+        // Practice functions
+        function startTopicPractice(topicId) {
+            const topic = dataStore.topics.find(t => t.id === topicId);
+            if (topic.problems.length > 0) {
+                showPage('practice');
+                startPractice(topicId);
+            } else {
+                showMessage('Practice problems for this topic are coming soon!', 'info');
+            }
+        }
 
-                function startPractice(topicId) {
-                    const topic = dataStore.topics.find(t => t.id === topicId);
-                    if (!topic || topic.problems.length === 0) {
-                        showMessage('No practice problems available for this topic yet.', 'info');
-                        return;
-                    }
+        function startPractice(topicId) {
+            const topic = dataStore.topics.find(t => t.id === topicId);
+            if (!topic || topic.problems.length === 0) {
+                showMessage('No practice problems available for this topic yet.', 'info');
+                return;
+            }
 
-                    currentPractice = {
-                        topicId: topicId,
-                        currentQuestion: 0,
-                        score: 0,
-                        answers: []
-                    };
+            currentPractice = {
+                topicId: topicId,
+                currentQuestion: 0,
+                score: 0,
+                answers: []
+            };
 
-                    showQuestion();
-                }
+            showQuestion();
+        }
 
-                function showQuestion() {
-                    const topic = dataStore.topics.find(t => t.id === currentPractice.topicId);
-                    const question = topic.problems[currentPractice.currentQuestion];
+        function showQuestion() {
+            const topic = dataStore.topics.find(t => t.id === currentPractice.topicId);
+            const question = topic.problems[currentPractice.currentQuestion];
 
-                    document.getElementById('practiceArea').innerHTML = `
+            document.getElementById('practiceArea').innerHTML = `
                 <div class="max-w-2xl mx-auto">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-900">${topic.name} Practice</h2>
@@ -1474,52 +1563,52 @@
                     </div>
                 </div>
             `;
+        }
+
+        function selectAnswer(selectedIndex) {
+            const topic = dataStore.topics.find(t => t.id === currentPractice.topicId);
+            const question = topic.problems[currentPractice.currentQuestion];
+            const isCorrect = selectedIndex === question.correct;
+
+            // Highlight selected answer
+            const options = document.querySelectorAll('.answer-option');
+            options.forEach((option, index) => {
+                if (index === selectedIndex) {
+                    option.classList.add(isCorrect ? 'correct' : 'wrong');
+                }
+                if (index === question.correct && !isCorrect) {
+                    option.classList.add('correct');
                 }
 
-                function selectAnswer(selectedIndex) {
-                    const topic = dataStore.topics.find(t => t.id === currentPractice.topicId);
-                    const question = topic.problems[currentPractice.currentQuestion];
-                    const isCorrect = selectedIndex === question.correct;
+                option.style.pointerEvents = 'none';
+            });
 
-                    // Highlight selected answer
-                    const options = document.querySelectorAll('.answer-option');
-                    options.forEach((option, index) => {
-                        if (index === selectedIndex) {
-                            option.classList.add(isCorrect ? 'correct' : 'wrong');
-                        }
-                        if (index === question.correct && !isCorrect) {
-                            option.classList.add('correct');
-                        }
+            currentPractice.answers.push(selectedIndex);
+            if (isCorrect) {
+                currentPractice.score += 10;
+            }
 
-                        option.style.pointerEvents = 'none';
-                    });
-
-                    currentPractice.answers.push(selectedIndex);
-                    if (isCorrect) {
-                        currentPractice.score += 10;
-                    }
-
-                    // Show next question or finish
-                    setTimeout(() => {
-                        currentPractice.currentQuestion++;
-                        if (currentPractice.currentQuestion < topic.problems.length) {
-                            showQuestion();
-                        } else {
-                            finishPractice();
-                        }
-                    }, 2000);
+            // Show next question or finish
+            setTimeout(() => {
+                currentPractice.currentQuestion++;
+                if (currentPractice.currentQuestion < topic.problems.length) {
+                    showQuestion();
+                } else {
+                    finishPractice();
                 }
+            }, 2000);
+        }
 
-                function finishPractice() {
-                    const topic = dataStore.topics.find(t => t.id === currentPractice.topicId);
-                    const totalQuestions = topic.problems.length;
-                    const correctAnswers = currentPractice.answers.filter((answer, index) =>
-                        answer === topic.problems[index].correct
-                    ).length;
+        function finishPractice() {
+            const topic = dataStore.topics.find(t => t.id === currentPractice.topicId);
+            const totalQuestions = topic.problems.length;
+            const correctAnswers = currentPractice.answers.filter((answer, index) =>
+                answer === topic.problems[index].correct
+            ).length;
 
-                    dataStore.completeTopicProblem(currentPractice.topicId, currentPractice.score);
+            dataStore.completeTopicProblem(currentPractice.topicId, currentPractice.score);
 
-                    document.getElementById('practiceArea').innerHTML = `
+            document.getElementById('practiceArea').innerHTML = `
                 <div class="text-center max-w-md mx-auto">
                     <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-r ${correctAnswers === totalQuestions ? 'from-green-400 to-blue-500' : 'from-purple-400 to-pink-500'} rounded-full flex items-center justify-center">
                         <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1543,55 +1632,88 @@
                 </div>
             `;
 
-                    currentPractice = null;
-                }
+            currentPractice = null;
+        }
 
-                // Profile functions
-                function updateProfile() {
-                    if (!dataStore.currentUser) return;
+        // Profile functions (now uses the updated method in DataStore)
+        function updateProfile() {
+            if (!dataStore.currentUser) return;
 
-                    const name = document.getElementById('profileName').value;
-                    const email = document.getElementById('profileEmail').value;
+            const name = document.getElementById('profileName').value.trim();
+            const email = document.getElementById('profileEmail').value.trim();
 
-                    dataStore.currentUser.name = name;
-                    dataStore.currentUser.email = email;
+            // Validation
+            if (!name || name.length < 2) {
+                showMessage('Please enter a valid name (at least 2 characters)', 'error');
+                return;
+            }
 
-                    dataStore.updateUI();
-                    showMessage('Profile updated successfully!', 'success');
-                }
+            if (!email || !isValidEmail(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
 
-                // Utility functions
-                function showMessage(message, type = 'info') {
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 ${type === 'success' ? 'success-message' :
-                        type === 'error' ? 'error-message' :
-                            'bg-blue-500'
-                        }`;
-                    messageDiv.textContent = message;
+            // Update using DataStore method
+            dataStore.updateProfile(name, email);
 
-                    document.body.appendChild(messageDiv);
+            // Update profile display elements
+            document.getElementById('profileDisplayName').textContent = name;
+            document.getElementById('profileDisplayEmail').textContent = email;
+            document.getElementById('profileInitial').textContent = name.charAt(0).toUpperCase();
 
-                    setTimeout(() => {
-                        messageDiv.remove();
-                    }, 3000);
-                }
+            showMessage('Profile updated successfully!', 'success');
+        }
 
-                // Close modal when clicking outside
-                document.getElementById('loginModal').addEventListener('click', function (e) {
-                    if (e.target === this) {
-                        closeLogin();
-                    }
-                });
+        function resetProfile() {
+            if (dataStore.currentUser) {
+                document.getElementById('profileName').value = dataStore.currentUser.name;
+                document.getElementById('profileEmail').value = dataStore.currentUser.email;
+            }
+            showMessage('Changes cancelled', 'info');
+        }
 
-                // Initialize
-                document.addEventListener('DOMContentLoaded', function () {
-                    // Add staggered animation delays to cards
-                    const cards = document.querySelectorAll('.card');
-                    cards.forEach((card, index) => {
-                        card.style.animationDelay = `${index * 0.1}s`;
-                    });
-                });
-            </script>
-            <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'989499e4c3a44463',t:'MTc1OTU4MDA4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+        // Clear recent activity function
+        function clearRecentActivity() {
+            if (confirm('Are you sure you want to clear all recent activity? This cannot be undone.')) {
+                dataStore.activities = [];
+                dataStore.updateRecentActivity();
+                dataStore.saveToStorage();
+                showMessage('Recent activity cleared!', 'success');
+            }
+        }
+
+        // Utility functions
+        function showMessage(message, type = 'info') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 ${type === 'success' ? 'success-message' :
+                type === 'error' ? 'error-message' :
+                    'bg-blue-500'
+                }`;
+            messageDiv.textContent = message;
+
+            document.body.appendChild(messageDiv);
+
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('loginModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeLogin();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'989499e4c3a44463',t:'MTc1OTU4MDA4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
+
 </html>
