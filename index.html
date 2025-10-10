@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DiscMath Companion - Interactive Discrete Mathematics</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="logo.svg">
+    <link rel="icon" href="images/logo.svg">
     <link rel="stylesheet" href="index.css">
 
 </head>
@@ -644,6 +644,9 @@
                 // HashMap for user data (simple object-based map simulation if needed, but using native Map)
                 this.users = new Map();
 
+                // Map for user activities (email -> array of activities)
+                this.userActivities = new Map();
+
                 // Array of topics
                 this.topics = [
                     {
@@ -683,27 +686,32 @@
                             {
                                 question: "If A = {1, 2, 3} and B = {2, 3, 4}, find A ∪ B",
                                 options: ["{1, 2, 3, 4}", "{2, 3}", "{1, 4}", "{1, 2, 3, 2, 3, 4}"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "The union of sets A and B includes all unique elements from both sets: 1,2,3 from A and 2,3,4 from B, resulting in {1,2,3,4}. Duplicates are not repeated."
                             },
                             {
                                 question: "What is A ∩ B for the same sets?",
                                 options: ["{1, 4}", "{2, 3}", "{1, 2, 3, 4}", "∅"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "The intersection includes only elements present in both sets: 2 and 3 are common to A and B."
                             },
                             {
                                 question: "Find A - B for A={1,2,3}, B={2,3,4}",
                                 options: ["{1}", "{2}", "{3}", "∅"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "Set difference A - B removes all elements of B from A: from {1,2,3}, remove 2 and 3, leaving {1}."
                             },
                             {
                                 question: "If U={1,2,3,4,5}, A={1,2}, find A'",
                                 options: ["{1,2,3}", "{3,4,5}", "{2,3,4}", "{5}"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "The complement A' consists of all elements in the universal set U that are not in A: U = {1,2,3,4,5} minus {1,2} = {3,4,5}."
                             },
                             {
                                 question: "Which is true?",
                                 options: ["{1,2} ⊆ {1,2,3}", "{4} ∈ {1,2,3}", "∅ ⊆ ∅ is false", "Order matters in sets"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "The subset relation ⊆ means every element of the left set is in the right set. {1,2} ⊆ {1,2,3} is true. {4} is not an element of {1,2,3}, ∅ ⊆ ∅ is true, and order does not matter in sets."
                             }
                         ]
                     },
@@ -744,25 +752,32 @@
                             {
                                 question: "What is the truth value of (T ∧ F) ∨ T?",
                                 options: ["True", "False", "Cannot determine", "Both"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "First, (T ∧ F) evaluates to False (AND requires both true). Then, False ∨ T evaluates to True (OR requires at least one true)."
                             },
                             {
                                 question: "Negation of True?",
                                 options: ["True", "False"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "The negation operator (¬) flips the truth value: ¬True = False."
                             },
                             {
-                                question: "If P is true, Q is false, what is P → Q?", options: ["True", "False"], correct: 1
+                                question: "If P is true, Q is false, what is P → Q?",
+                                options: ["True", "False"],
+                                correct: 1,
+                                explanation: "Implication (→) is false only when the premise P is true and the conclusion Q is false. Here, that's the case."
                             },
                             {
                                 question: "If P=false, Q=false, what is P ∨ Q?",
                                 options: ["True", "False"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "OR (∨) is true if at least one is true, but both false results in False."
                             },
                             {
                                 question: "Which is tautology?",
                                 options: ["P ∨ ¬P", "P ∧ ¬P", "P → Q", "Q → P"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "A tautology is always true. P ∨ ¬P (law of excluded middle) is always true regardless of P's value. P ∧ ¬P is always false (contradiction)."
                             }
                         ]
                     },
@@ -803,27 +818,32 @@
                             {
                                 question: "In a complete graph with 5 vertices, how many edges are there?",
                                 options: ["10", "15", "20", "25"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "A complete graph Kn has n(n-1)/2 edges, where every pair of vertices is connected. For n=5, 5*4/2 = 10 edges."
                             },
                             {
                                 question: "Degree of each vertex in complete graph K4?",
                                 options: ["2", "3", "4", "6"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "In Kn, each vertex connects to (n-1) others. For K4 (n=4), degree = 3."
                             },
                             {
                                 question: "In a tree with 7 vertices, edges=?",
                                 options: ["6", "7", "8", "5"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "A tree with n vertices has exactly (n-1) edges and no cycles. For n=7, edges = 6."
                             },
                             {
                                 question: "Which is Eulerian?",
                                 options: ["All vertices even degree", "All vertices odd degree", "Exactly 2 odd", "None"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "A graph has an Eulerian circuit if all vertices have even degree. For Eulerian path, exactly 0 or 2 odd degrees."
                             },
                             {
                                 question: "Which is planar?",
                                 options: ["K3,3", "K5", "K4", "K6"],
-                                correct: 2
+                                correct: 2,
+                                explanation: "K4 is planar (can be drawn without crossings). K3,3 and K5 are non-planar by Kuratowski's theorem."
                             }
 
                         ]
@@ -865,27 +885,32 @@
                             {
                                 question: "How many ways can you arrange 3 books from 5 books?",
                                 options: ["60", "10", "15", "125"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "This is a permutation since order matters: P(5,3) = 5 × 4 × 3 = 60 ways."
                             },
                             {
                                 question: "Choose 3 books from 5?",
                                 options: ["60", "10", "15", "20"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "This is a combination since order doesn't matter: C(5,3) = 10 ways."
                             },
                             {
                                 question: "Factorial 4! = ?",
                                 options: ["24", "12", "20", "16"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "n! = n × (n-1) × ... × 1, so 4! = 4 × 3 × 2 × 1 = 24."
                             },
                             {
                                 question: "P(6,2) = ?",
                                 options: ["30", "36", "15", "12"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "P(6,2) = 6 × 5 = 30 (arrangements of 2 items from 6)."
                             },
                             {
                                 question: "C(6,2) = ?",
                                 options: ["15", "20", "10", "30"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "C(6,2) = 6! / (2! × 4!) = (6×5)/2 = 15 (selections of 2 from 6)."
                             }
                         ]
                     },
@@ -931,27 +956,32 @@
                             {
                                 question: "gcd(24,36)?",
                                 options: ["6", "12", "18", "24"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "Using Euclidean algorithm: gcd(36,24) = gcd(24,36 mod 24=12) = gcd(12,24 mod 12=0) = 12. 12 divides both evenly."
                             },
                             {
                                 question: "Which is prime?",
                                 options: ["21", "29", "33", "39"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "29 is prime (greater than 1, no divisors other than 1 and itself). 21=3×7, 33=3×11, 39=3×13."
                             },
                             {
                                 question: "If a≡2(mod5), b≡3(mod5), (a+b)mod5?",
                                 options: ["0", "1", "4", "5"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "Modular arithmetic: (a + b) mod 5 = (2 + 3) mod 5 = 5 mod 5 = 0."
                             },
                             {
                                 question: "LCM(8,12)?",
                                 options: ["16", "24", "48", "96"],
-                                correct: 1
+                                correct: 1,
+                                explanation: "Prime factors: 8=2^3, 12=2^2×3. LCM takes highest powers: 2^3 × 3 = 24."
                             },
                             {
                                 question: "Which congruence true?",
                                 options: ["15≡3(mod4)", "20≡3(mod5)", "10≡1(mod2)", "14≡1(mod7)"],
-                                correct: 0
+                                correct: 0,
+                                explanation: "15 ÷ 4 = 3 remainder 3, so 15 ≡ 3 (mod 4). 20 ≡ 0 (mod 5), 10 ≡ 0 (mod 2), 14 ≡ 0 (mod 7)."
                             }
                         ]
                     },
@@ -1005,9 +1035,6 @@
                 // Current user data
                 this.currentUser = null;
 
-                // Activity log (Array)
-                this.activities = [];
-
                 // Load persisted data from localStorage (simple JSON object/array storage)
                 this.loadFromStorage();
             }
@@ -1019,8 +1046,9 @@
                     const usersObj = Object.fromEntries(this.users);
                     localStorage.setItem('discmath_users', JSON.stringify(usersObj));
 
-                    // Store activities as array
-                    localStorage.setItem('discmath_activities', JSON.stringify(this.activities));
+                    // Store user activities as object (email -> array)
+                    const activitiesObj = Object.fromEntries(this.userActivities);
+                    localStorage.setItem('discmath_userActivities', JSON.stringify(activitiesObj));
 
                     // Store current user email (to restore on load)
                     if (this.currentUser) {
@@ -1041,10 +1069,11 @@
                         this.users = new Map(Object.entries(usersObj));
                     }
 
-                    // Load activities
-                    const activitiesStr = localStorage.getItem('discmath_activities');
+                    // Load user activities
+                    const activitiesStr = localStorage.getItem('discmath_userActivities');
                     if (activitiesStr) {
-                        this.activities = JSON.parse(activitiesStr);
+                        const activitiesObj = JSON.parse(activitiesStr);
+                        this.userActivities = new Map(Object.entries(activitiesObj));
                     }
 
                     // Restore current user if email is stored
@@ -1070,19 +1099,30 @@
                     joinDate: new Date().toISOString()
                 };
                 this.users.set(userData.email, this.currentUser);
+
+                // Initialize activities for new user
+                if (!this.userActivities.has(userData.email)) {
+                    this.userActivities.set(userData.email, []);
+                }
+
                 this.updateUI();
+                this.updateRecentActivity();
                 this.saveToStorage(); // Persist after setting
             }
 
-            // Add activity to log
+            // Add activity to user's log
             addActivity(activity) {
-                this.activities.unshift({
+                if (!this.currentUser) return;
+
+                let userActs = this.userActivities.get(this.currentUser.email) || [];
+                userActs.unshift({
                     ...activity,
                     timestamp: new Date().toISOString()
                 });
-                if (this.activities.length > 10) {
-                    this.activities.pop(); // Keep only last 10 activities
+                if (userActs.length > 10) {
+                    userActs.pop(); // Keep only last 10 activities
                 }
+                this.userActivities.set(this.currentUser.email, userActs);
                 this.updateRecentActivity();
                 this.saveToStorage(); // Persist activities
             }
@@ -1106,19 +1146,31 @@
                 }
             }
 
-            // Update profile (now persists changes)
+            // Update profile (fixed to handle email change properly)
             updateProfile(name, email) {
                 if (!this.currentUser) return;
+
+                const oldEmail = this.currentUser.email;
 
                 // Update current user
                 this.currentUser.name = name;
                 this.currentUser.email = email;
 
-                // Update in users map (re-set with new email if changed)
-                this.users.delete(this.currentUser.email); // Remove old entry if email changed
+                // Handle users map
                 this.users.set(email, this.currentUser);
+                if (oldEmail !== email) {
+                    this.users.delete(oldEmail);
+                }
+
+                // Handle userActivities map
+                if (oldEmail !== email) {
+                    const oldActs = this.userActivities.get(oldEmail) || [];
+                    this.userActivities.set(email, oldActs);
+                    this.userActivities.delete(oldEmail);
+                }
 
                 this.updateUI();
+                this.updateRecentActivity();
                 this.saveToStorage(); // Persist profile changes
             }
 
@@ -1139,13 +1191,16 @@
             }
 
             updateRecentActivity() {
+                if (!this.currentUser) return;
+
+                const userActs = this.userActivities.get(this.currentUser.email) || [];
                 const container = document.getElementById('recentActivity');
-                if (this.activities.length === 0) {
+                if (userActs.length === 0) {
                     container.innerHTML = '<p class="text-gray-500 text-center py-8">No recent activity. Start learning to see your progress here!</p>';
                     return;
                 }
 
-                container.innerHTML = this.activities.map(activity => `
+                container.innerHTML = userActs.map(activity => `
                     <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                         <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
                             <span class="text-purple-600 text-sm">✓</span>
@@ -1236,6 +1291,8 @@
                         // Returning user
                         dataStore.currentUser = existingUser;
                         dataStore.currentUser.name = name; // Update name in case it changed
+                        dataStore.updateUI();
+                        dataStore.updateRecentActivity();
                         showMessage(`Welcome back, ${name}!`, 'success');
                     } else {
                         // New user
@@ -1284,6 +1341,7 @@
             loadTopics();
             loadFormulas();
             loadPracticeTopics();
+            dataStore.updateRecentActivity(); // Ensure recent activity is up-to-date
         }
 
         // Navigation
@@ -1588,6 +1646,18 @@
                 currentPractice.score += 10;
             }
 
+            // Show explanation only if wrong
+            if (!isCorrect) {
+                const optionsContainer = document.querySelector('.mb-8 .space-y-3');
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'mt-4 p-4 bg-red-50 border-l-4 border-red-400 rounded-r-lg';
+                explanationDiv.innerHTML = `
+                    <h4 class="font-semibold text-red-800 mb-2">Why is this wrong?</h4>
+                    <p class="text-red-700 text-sm">${question.explanation}</p>
+                `;
+                optionsContainer.insertAdjacentElement('afterend', explanationDiv);
+            }
+
             // Show next question or finish
             setTimeout(() => {
                 currentPractice.currentQuestion++;
@@ -1596,7 +1666,7 @@
                 } else {
                     finishPractice();
                 }
-            }, 2000);
+            }, 3000); // Increased timeout to 3s to allow reading the explanation
         }
 
         function finishPractice() {
@@ -1674,12 +1744,13 @@
 
         // Clear recent activity function
         function clearRecentActivity() {
-            if (confirm('Are you sure you want to clear all recent activity? This cannot be undone.')) {
-                dataStore.activities = [];
-                dataStore.updateRecentActivity();
-                dataStore.saveToStorage();
-                showMessage('Recent activity cleared!', 'success');
+            if (!dataStore.currentUser || !confirm('Are you sure you want to clear all recent activity? This cannot be undone.')) {
+                return;
             }
+            dataStore.userActivities.set(dataStore.currentUser.email, []);
+            dataStore.updateRecentActivity();
+            dataStore.saveToStorage();
+            showMessage('Recent activity cleared!', 'success');
         }
 
         // Utility functions
@@ -1715,5 +1786,4 @@
     </script>
     <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'989499e4c3a44463',t:'MTc1OTU4MDA4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
-
 </html>
